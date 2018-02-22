@@ -1,9 +1,9 @@
 package ramapo.edu.sminev.chess.Model;
 
-enum {PAWN, ROOK, BISHOP, KNIGHT, QUEEN, KING};
+
 
 public class Piece {
-
+    private enum pieces {PAWN, ROOK, BISHOP, KNIGHT, QUEEN, KING};
     private int m_xposition;
     private int m_yposition;
     //Enumerate
@@ -24,7 +24,7 @@ public class Piece {
     public Piece(int a_xposition, int a_yposition, int a_type){
         m_xposition = a_xposition;
         m_yposition = a_yposition;
-        m_type = pieces.KNIGHT;
+
     }
 
     public int getXpos() {
