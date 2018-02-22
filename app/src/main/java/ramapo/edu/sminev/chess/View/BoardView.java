@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import ramapo.edu.sminev.chess.Model.BoardState;
+import ramapo.edu.sminev.chess.Model.Piece;
 import ramapo.edu.sminev.chess.R;
 
 public class BoardView {
@@ -35,12 +37,25 @@ public class BoardView {
                     square.setBackgroundColor(BROWN);
 
                 row.addView(square);
+                int id = (i*8) + j;
+                square.setId(id);
                 //board.addView(square);
             }
             board.addView(row);
         }
     }
 
+
+    public void update(BoardState boardState){
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j< 8; j++){
+                if(boardState.getSquare(i,j).getType() != null) {
+                    ImageButton piece = board.findViewById((i * 8) + j);
+                    piece.setImageResource(boardState.getSquare(i,j).getDrawableId());
+                }
+            }
+        }
+    }
 
     public void setPiecesView(){
 

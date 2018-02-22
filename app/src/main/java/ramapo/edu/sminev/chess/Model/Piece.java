@@ -3,22 +3,18 @@ package ramapo.edu.sminev.chess.Model;
 
 
 public class Piece {
-    private enum pieces {PAWN, ROOK, BISHOP, KNIGHT, QUEEN, KING};
+    public enum PieceType {PAWN, ROOK, BISHOP, KNIGHT, QUEEN, KING};
     private int m_xposition;
     private int m_yposition;
-    //Enumerate
-    //Pawn = 0
-    //Rook = 1
-    //Knight = 2
-    //Bishop = 3
-    //Queen = 4
-    //King = 5
-    private int m_type;
+    private int m_color;
+    private int m_drawableId;
+    private PieceType m_type;
 
     public Piece(){
         m_xposition = 0;
         m_yposition = 0;
-        m_type = 0;
+        m_type = null;
+        m_color = 0;
     }
 
     public Piece(int a_xposition, int a_yposition, int a_type){
@@ -26,6 +22,10 @@ public class Piece {
         m_yposition = a_yposition;
 
     }
+
+    public int getColor(){ return m_color;}
+
+    public void setColor(int a_color) {m_color = a_color;}
 
     public int getXpos() {
         return m_xposition;
@@ -43,11 +43,22 @@ public class Piece {
         m_yposition = a_yposition;
     }
 
-    public int getType() {
+    public PieceType getType() {
         return m_type;
     }
 
-    public void setType(int a_type) {
+    public void setType(PieceType a_type) {
         this.m_type = a_type;
     }
+
+
+
+    public int getDrawableId() {
+        return m_drawableId;
+    }
+
+    public void setDrawableId(int a_drawableId) {
+        this.m_drawableId = a_drawableId;
+    }
+
 }

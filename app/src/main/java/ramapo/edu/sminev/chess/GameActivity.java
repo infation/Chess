@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import ramapo.edu.sminev.chess.Model.BoardState;
 import ramapo.edu.sminev.chess.View.BoardView;
 
 public class GameActivity extends AppCompatActivity {
@@ -21,6 +22,8 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
 
         BoardView boardView= new BoardView(this);
+        BoardState boardState = new BoardState();
+        boardView.update(boardState);
         //ViewGroup grid = findViewById(R.id.board);
         //grid.addView(boardView);
     }
