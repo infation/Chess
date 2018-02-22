@@ -21,11 +21,8 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
 
         BoardView boardView= new BoardView(this);
-
-        boardView.setNumColumns(8);
-        boardView.setNumRows(8);
-        ViewGroup grid = findViewById(R.id.board);
-        grid.addView(boardView);
+        //ViewGroup grid = findViewById(R.id.board);
+        //grid.addView(boardView);
     }
 
 }
