@@ -1,13 +1,12 @@
 package ramapo.edu.sminev.chess.View;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import ramapo.edu.sminev.chess.GameActivity;
 import ramapo.edu.sminev.chess.Model.BoardState;
-import ramapo.edu.sminev.chess.Model.Piece;
 import ramapo.edu.sminev.chess.R;
 
 public class BoardView {
@@ -16,7 +15,7 @@ public class BoardView {
     public static final int BROWN = Color.rgb(129,92,10);
     private LinearLayout board;
 
-    public BoardView(Activity activity){
+    public BoardView(GameActivity activity){
 
         board = activity.findViewById(R.id.board);
 
@@ -36,9 +35,12 @@ public class BoardView {
                 else
                     square.setBackgroundColor(BROWN);
 
-                row.addView(square);
+                //Set the id of the particular button
                 int id = (i*8) + j;
                 square.setId(id);
+                //Add Listener
+                square.setOnClickListener(activity.buttonHandler);
+                row.addView(square);
                 //board.addView(square);
             }
             board.addView(row);
@@ -46,20 +48,32 @@ public class BoardView {
     }
 
 
-    public void update(BoardState boardState){
+    public void updateView(BoardState boardState){
         for(int i = 0; i < 8; i++){
             for(int j = 0; j< 8; j++){
+                ImageButton piece = board.findViewById((i * 8) + j);
                 if(boardState.getSquare(i,j).getType() != null) {
-                    ImageButton piece = board.findViewById((i * 8) + j);
+
                     piece.setImageResource(boardState.getSquare(i,j).getDrawableId());
+                }
+                else{
+                    piece.setImageResource(android.R.color.transparent);
                 }
             }
         }
     }
 
-    public void setPiecesView(){
 
-    }
+
+    /*public void showMoves(int moveId){
+        int j = moveId%8;
+        int i = moveId/8;
+        int newId = (i+1)*8 + j;
+        ImageButton b = board.findViewById(newId);
+        //b.setImageResource(android.R.drawable.ic_delete);
+        b.setImageResource(android.R.drawable.ic_delete);
+        //b.setForeground(board.getResources().getDrawable(android.R.drawable.ic_delete));
+    }*/
 
 
 }

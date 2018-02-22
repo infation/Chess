@@ -1,8 +1,6 @@
 package ramapo.edu.sminev.chess.Model;
 
 
-import ramapo.edu.sminev.chess.R;
-
 public class BoardState {
 
     private Piece board[][];
@@ -63,6 +61,16 @@ public class BoardState {
         board[0][7] = new Rook(0);
         board[7][0] = new Rook(1);
         board[7][7] = new Rook(1);
+    }
+
+    public void updateState(int oldPos, int newPos){
+        int oldY = oldPos/8;
+        int oldX = oldPos%8;
+        int newY = newPos/8;
+        int newX = newPos%8;
+        System.out.println("Y: "+ oldY+"X: "+oldX+"Y: "+newY+ "X: "+ newX);
+        board[newY][newX] = board[oldY][oldX];
+        board[oldY][oldX] = new Piece();
     }
 
 
