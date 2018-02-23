@@ -6,16 +6,23 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import ramapo.edu.sminev.chess.GameActivity;
-import ramapo.edu.sminev.chess.Model.BoardState;
+import ramapo.edu.sminev.chess.Model.Coords;
+import ramapo.edu.sminev.chess.Model.GameState;
+import ramapo.edu.sminev.chess.Model.Piece;
+import ramapo.edu.sminev.chess.Model.Player;
 import ramapo.edu.sminev.chess.R;
 
 public class BoardView {
 
-    public static final int TAN = Color.rgb(172,150,120);
-    public static final int BROWN = Color.rgb(129,92,10);
-    private LinearLayout board;
+    private static final int TAN = Color.rgb(172,150,120);
+    private static final int BROWN = Color.rgb(129,92,10);
+    private static LinearLayout board;
 
-    public BoardView(GameActivity activity){
+    public BoardView(){
+
+    }
+
+    public static void initializeLayout(GameActivity activity){
 
         board = activity.findViewById(R.id.board);
 
@@ -45,11 +52,11 @@ public class BoardView {
             }
             board.addView(row);
         }
+        initializePieces();
     }
 
-
-    public void updateView(BoardState boardState){
-        for(int i = 0; i < 8; i++){
+    /*public static void updateView(Player[] players){
+        /*for(int i = 0; i < 8; i++){
             for(int j = 0; j< 8; j++){
                 ImageButton piece = board.findViewById((i * 8) + j);
                 if(boardState.getSquare(i,j).getType() != null) {
@@ -61,6 +68,40 @@ public class BoardView {
                 }
             }
         }
+        for(int i = 0; i < 2; i++){
+            for(int j = 0; j < players[i].getPieces().size();j++){
+                ImageButton piece = board.findViewById(players[i].getPieces().get(j).getCoords().convertToId());
+                piece.setImageResource(players[i].getPieces().get(j).getDrawableId());
+            }
+        }
+    }*/
+
+    private static void initializePieces() {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                ImageButton piece = board.findViewById(Piece.convertToId(j, i));
+                if (GameState.getBoard()[i][j] != null) {
+                    piece.setImageResource(GameState.getBoard()[i][j].getDrawableId());
+                } else {
+                    piece.setImageResource(android.R.color.transparent);
+                }
+            }
+        }
+    }
+
+    public static void update(int a_oldLoc, int a_newLoc){
+        updateLocation(a_newLoc);
+        clearLocation(a_oldLoc);
+    }
+
+    private static void updateLocation(int a_loc){
+        ImageButton piece = board.findViewById(a_loc);
+        piece.setImageResource(GameState.getBoard()[a_loc/8][a_loc%8].getDrawableId());
+    }
+
+    private static void clearLocation(int a_loc){
+        ImageButton piece = board.findViewById(a_loc);
+        piece.setImageResource(android.R.color.transparent);
     }
 
 

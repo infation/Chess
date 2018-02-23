@@ -2,13 +2,10 @@ package ramapo.edu.sminev.chess.Model;
 
 import ramapo.edu.sminev.chess.R;
 
-/**
- * Created by sminev on 2/22/18.
- */
 
 public class Bishop extends Piece {
 
-    public Bishop(int a_color){
+    public Bishop(int a_color, int a_row, int a_col){
         super();
         this.setType(PieceType.BISHOP);
         setColor(a_color);

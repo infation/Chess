@@ -7,7 +7,7 @@ import ramapo.edu.sminev.chess.R;
  */
 
 public class Queen extends Piece {
-    public Queen(int a_color){
+    public Queen(int a_color, int a_row, int a_col){
         super();
         this.setType(PieceType.QUEEN);
         setColor(a_color);

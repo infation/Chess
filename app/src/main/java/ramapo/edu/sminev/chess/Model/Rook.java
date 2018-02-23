@@ -8,7 +8,7 @@ import ramapo.edu.sminev.chess.R;
 
 public class Rook extends Piece{
 
-    public Rook(int color){
+    public Rook(int color, int a_row, int a_col){
         super();
         this.setType(PieceType.ROOK);
         setColor(color);

@@ -5,7 +5,7 @@ import ramapo.edu.sminev.chess.R;
 
 public class Pawn extends Piece {
 
-    public Pawn(int a_color){
+    public Pawn(int a_color, int a_row, int a_col){
         super();
         this.setType(PieceType.PAWN);
         setColor(a_color);
@@ -17,8 +17,5 @@ public class Pawn extends Piece {
         }
     }
 
-    public void play(){
-
-    }
 
 }

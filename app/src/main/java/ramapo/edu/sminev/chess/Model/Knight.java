@@ -8,7 +8,7 @@ import ramapo.edu.sminev.chess.R;
 
 public class Knight extends Piece {
 
-    public Knight(int a_color){
+    public Knight(int a_color, int a_row, int a_col){
         super();
         this.setType(PieceType.KNIGHT);
         setColor(a_color);
