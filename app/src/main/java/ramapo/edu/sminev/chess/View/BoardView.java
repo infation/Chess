@@ -6,10 +6,9 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import ramapo.edu.sminev.chess.GameActivity;
-import ramapo.edu.sminev.chess.Model.Coords;
 import ramapo.edu.sminev.chess.Model.GameState;
+import ramapo.edu.sminev.chess.Model.Location;
 import ramapo.edu.sminev.chess.Model.Piece;
-import ramapo.edu.sminev.chess.Model.Player;
 import ramapo.edu.sminev.chess.R;
 
 public class BoardView {
@@ -79,7 +78,8 @@ public class BoardView {
     private static void initializePieces() {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                ImageButton piece = board.findViewById(Piece.convertToId(j, i));
+                Location loc = new Location(i, j);
+                ImageButton piece = board.findViewById(Location.convertToId(loc));
                 if (GameState.getBoard()[i][j] != null) {
                     piece.setImageResource(GameState.getBoard()[i][j].getDrawableId());
                 } else {
@@ -89,18 +89,18 @@ public class BoardView {
         }
     }
 
-    public static void update(int a_oldLoc, int a_newLoc){
-        updateLocation(a_newLoc);
-        clearLocation(a_oldLoc);
+    public static void update(Location oldLoc, Location newLoc){
+        updateLocation(newLoc);
+        clearLocation(oldLoc);
     }
 
-    private static void updateLocation(int a_loc){
-        ImageButton piece = board.findViewById(a_loc);
-        piece.setImageResource(GameState.getBoard()[a_loc/8][a_loc%8].getDrawableId());
+    private static void updateLocation(Location loc){
+        ImageButton piece = board.findViewById(Location.convertToId(loc));
+        piece.setImageResource(GameState.getBoard()[loc.row][loc.col].getDrawableId());
     }
 
-    private static void clearLocation(int a_loc){
-        ImageButton piece = board.findViewById(a_loc);
+    private static void clearLocation(Location loc){
+        ImageButton piece = board.findViewById(Location.convertToId(loc));
         piece.setImageResource(android.R.color.transparent);
     }
 

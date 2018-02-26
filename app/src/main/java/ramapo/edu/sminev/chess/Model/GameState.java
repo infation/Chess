@@ -38,13 +38,13 @@ public class GameState {
         }
     }*/
 
-    public static void updateState(int oldX, int oldY, int newX, int newY){
-        if(board[oldY][oldX] != null) {
-            board[newY][newX] = board[oldY][oldX];
-            board[oldY][oldX] = null;
+    public static void updateState(Location oldLoc, Location newLoc){
+        if(board[oldLoc.row][oldLoc.col] != null) {
+            board[newLoc.row][newLoc.col] = board[oldLoc.row][oldLoc.col];
+            board[oldLoc.row][oldLoc.col] = null;
             //BoardView.clearView(a_oldLoc.convertToId());
             //BoardView.updateMove();
-            BoardView.update(Piece.convertToId(oldX,oldY), Piece.convertToId(newX,newY));
+            BoardView.update(oldLoc, newLoc);
         }
     }
     private static void initializePieces(){

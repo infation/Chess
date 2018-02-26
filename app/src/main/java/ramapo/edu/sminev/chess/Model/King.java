@@ -6,37 +6,34 @@ import ramapo.edu.sminev.chess.R;
 
 public class King extends Piece {
 
-    public King(int a_color, int a_row, int a_col){
+    public King(int a_color, int a_row, int a_col) {
         super();
         this.setType(PieceType.KING);
         setColor(a_color);
-        if(a_color == 0){
+        if (a_color == 0) {
             setDrawableId(R.drawable.black_king);
-        }
-        else{
+        } else {
             setDrawableId(R.drawable.white_king);
         }
     }
 
-    /*public Vector<Coords> getMoves(){
-        Vector<Coords> moves = new Vector<>();
-        for(int row = getCoords().getRow()-1; row < getCoords().getRow()+2; row++){
+    public Vector<Location> getPredefinedMoves(Location a_loc) {
+        Vector<Location> moves = new Vector<>();
+        for (int row = a_loc.row - 1; row < a_loc.row + 2; row++) {
 
-            if(row < 0 || row > 7) continue;
+            //If out of bounds
+            if (row < 0 || row > 7) continue;
 
-            for(int col = getCoords().getCol()-1; col < getCoords().getCol()+2; col++){
+            for (int col = a_loc.col - 1; col < a_loc.col+ 2; col++) {
                 //If outside of bounds of board
-                if(col < 0 || col > 7) continue;
-                if(row == getCoords().getRow() && col == getCoords().getCol()) continue;
-                Vector<Piece> pieces = GameState.getPlayers()[this.getColor()].getPieces();
-                for(int i = 0; i < pieces.size(); i++){
-                    if(pieces.get(i).getCoords().isEqual(row,col)) break;
-                }
-
-
-                //moves.add(new Coords(row, col));
+                if (col < 0 || col > 7) continue;
+                //Same location
+                if (row == a_loc.row && col == a_loc.col) continue;
+                moves.add(new Location(row, col));
             }
         }
-        return moves;
-    }*/
+        return getAvailableMoves(a_loc, moves);
+    }
+
+
 }

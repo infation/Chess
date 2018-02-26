@@ -14,16 +14,6 @@ public class Piece {
         m_color = 0;
     }
 
-    public static int convertToId(int x, int y){
-        return y*8+x;
-    }
-
-    public static int[] parseId(int loc){
-        int coords[] = new int[2];
-        coords[0] = loc%8;
-        coords[1] = loc/8;
-        return coords;
-    }
 
     public int getColor(){ return m_color;}
 
@@ -47,6 +37,18 @@ public class Piece {
         this.m_drawableId = a_drawableId;
     }
 
-    public Vector<Coords> getMoves(){return new Vector<>();}
+    public Vector<Location> getPredefinedMoves(Location a_loc){return new Vector<>();}
+
+    public Vector<Location> getAvailableMoves(Location a_loc, Vector<Location> a_moves){
+        Vector<Location> moves = new Vector<>();
+        for(int i = 0 ; i < a_moves.size(); i++){
+            Location loc = a_moves.get(i);
+            int color = GameState.getBoard()[a_loc.row][a_loc.col].getColor();
+            if(GameState.getBoard()[loc.row][loc.col] != null && GameState.getBoard()[loc.row][loc.col].getColor()==color) continue;
+            moves.add(loc);
+            Location.toString(loc);
+        }
+        return moves;
+    }
 
 }
