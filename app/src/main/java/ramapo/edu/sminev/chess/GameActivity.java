@@ -4,6 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import java.util.Vector;
+
 import ramapo.edu.sminev.chess.Model.GameState;
 import ramapo.edu.sminev.chess.Model.Location;
 import ramapo.edu.sminev.chess.Model.Piece;
@@ -35,7 +37,7 @@ public class GameActivity extends AppCompatActivity{
             if(!clickCount) {
                oldLoc = Location.parseId(view.getId());
                clickCount = true;
-               GameState.getBoard()[oldLoc.row][oldLoc.col].getPredefinedMoves(oldLoc);
+               BoardView.showMoves(oldLoc);
                //boardView.showMoves(oldPosId);
                 // ImageButton b = view.findViewById(id);
                 //b.setImageResource(android.R.color.transparent);

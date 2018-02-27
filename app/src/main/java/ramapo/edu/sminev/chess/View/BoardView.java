@@ -5,6 +5,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import java.util.Vector;
+
 import ramapo.edu.sminev.chess.GameActivity;
 import ramapo.edu.sminev.chess.Model.GameState;
 import ramapo.edu.sminev.chess.Model.Location;
@@ -106,15 +108,26 @@ public class BoardView {
 
 
 
-    /*public void showMoves(int moveId){
-        int j = moveId%8;
-        int i = moveId/8;
-        int newId = (i+1)*8 + j;
-        ImageButton b = board.findViewById(newId);
+    public static void showMoves(Location a_loc){
+        Vector<Location> moves = GameState.getBoard()[a_loc.row][a_loc.col].getPredefinedMoves(a_loc);
+        for(int i = 0; i < moves.size(); i++){
+            ImageButton b = board.findViewById(Location.convertToId(moves.get(i)));
+            b.setForeground(board.getResources().getDrawable(android.R.drawable.ic_delete));
+        }
         //b.setImageResource(android.R.drawable.ic_delete);
-        b.setImageResource(android.R.drawable.ic_delete);
-        //b.setForeground(board.getResources().getDrawable(android.R.drawable.ic_delete));
-    }*/
+        //b.setImageResource(android.R.drawable.ic_delete);
+
+    }
+
+    public static void clearMoves(Location a_loc){
+        Vector<Location> moves = GameState.getBoard()[a_loc.row][a_loc.col].getPredefinedMoves(a_loc);
+        for(int i = 0; i < moves.size(); i++){
+            ImageButton b = board.findViewById(Location.convertToId(moves.get(i)));
+            //b.setForeground(board.getResources().getDrawable(android.R.drawable.ic_delete));
+            b.setForeground(board.getResources().getDrawable(android.R.color.transparent));
+        }
+
+    }
 
 
 }

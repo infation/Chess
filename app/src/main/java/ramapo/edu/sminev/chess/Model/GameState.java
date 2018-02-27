@@ -1,6 +1,8 @@
 package ramapo.edu.sminev.chess.Model;
 
 
+import java.util.Vector;
+
 import ramapo.edu.sminev.chess.View.BoardView;
 
 public class GameState {
@@ -39,12 +41,18 @@ public class GameState {
     }*/
 
     public static void updateState(Location oldLoc, Location newLoc){
-        if(board[oldLoc.row][oldLoc.col] != null) {
-            board[newLoc.row][newLoc.col] = board[oldLoc.row][oldLoc.col];
-            board[oldLoc.row][oldLoc.col] = null;
-            //BoardView.clearView(a_oldLoc.convertToId());
-            //BoardView.updateMove();
-            BoardView.update(oldLoc, newLoc);
+        BoardView.clearMoves(oldLoc);
+        Vector<Location> moves = board[oldLoc.row][oldLoc.col].getPredefinedMoves(oldLoc);
+        for(int i = 0; i < moves.size(); i++){
+            if(newLoc.row == moves.get(i).row && newLoc.col == moves.get(i).col){
+                if(board[oldLoc.row][oldLoc.col] != null) {
+                    board[newLoc.row][newLoc.col] = board[oldLoc.row][oldLoc.col];
+                    board[oldLoc.row][oldLoc.col] = null;
+                    //BoardView.clearView(a_oldLoc.convertToId());
+                    //BoardView.updateMove();
+                    BoardView.update(oldLoc, newLoc);
+                }
+            }
         }
     }
     private static void initializePieces(){
