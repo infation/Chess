@@ -3,6 +3,7 @@ package ramapo.edu.sminev.chess;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.Vector;
 
@@ -35,15 +36,17 @@ public class GameActivity extends AppCompatActivity{
     public View.OnClickListener buttonHandler = (new View.OnClickListener() {
         public void onClick(View view){
             if(!clickCount) {
-               oldLoc = Location.parseId(view.getId());
-               clickCount = true;
-               BoardView.showMoves(oldLoc);
-               //boardView.showMoves(oldPosId);
-                // ImageButton b = view.findViewById(id);
-                //b.setImageResource(android.R.color.transparent);
+                if(GameState.isCorrectSelection(Location.parseId(view.getId()))) {
+                    oldLoc = Location.parseId(view.getId());
+                    clickCount = true;
+                    BoardView.showMoves(oldLoc);
+                }
             }
             else{
                 GameState.updateState(oldLoc, Location.parseId(view.getId()));
+                /*if(GameState.isKingInCheck()){
+                    Toast.makeText(GameActivity.this, "King in check", Toast.LENGTH_LONG).show();
+                }*/
                 //boardView.updateView(boardState);
                 clickCount = false;
             }

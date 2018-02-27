@@ -1,6 +1,8 @@
 package ramapo.edu.sminev.chess.Model;
 
 
+import android.widget.Toast;
+
 import java.util.Vector;
 
 import ramapo.edu.sminev.chess.View.BoardView;
@@ -10,7 +12,7 @@ public class GameState {
 
     //private static Player[] players;
     private static Piece board[][];
-
+    private static int turn;
     public static void initializeGame(){
         //players = new Player[2];
         //players[0] = new Human();
@@ -21,6 +23,7 @@ public class GameState {
                 board[i][j] = null;
             }
         }
+        turn = 1;
         initializePieces();
     }
 
@@ -28,7 +31,15 @@ public class GameState {
     public static Piece[][] getBoard(){
         return board;
     }
-
+    public static int getTurn(){ return turn; }
+    public static void switchTurn() {
+        if(turn == 0){
+            turn = 1;
+        }
+        else{
+            turn = 0;
+        }
+    }
     /*public void updateState(int a_oldId, int a_newId){
 
         for(int i = 0; i < players[0].getPieces().size();i++){
@@ -48,13 +59,45 @@ public class GameState {
                 if(board[oldLoc.row][oldLoc.col] != null) {
                     board[newLoc.row][newLoc.col] = board[oldLoc.row][oldLoc.col];
                     board[oldLoc.row][oldLoc.col] = null;
+                    switchTurn();
                     //BoardView.clearView(a_oldLoc.convertToId());
                     //BoardView.updateMove();
                     BoardView.update(oldLoc, newLoc);
                 }
             }
         }
+
     }
+
+    public static boolean isCorrectSelection(Location a_loc){
+        if(board[a_loc.row][a_loc.col]!=null&&board[a_loc.row][a_loc.col].getColor()==turn){
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isKingInCheck(){
+        switchTurn();
+        Vector<Location> moves = new Vector<>();
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
+                if(board[i][j]!=null && board[i][j].getColor()== turn)
+                    moves.addAll(board[i][j].getPredefinedMoves(new Location(i,j)));
+            }
+        }
+
+        for(int i = 0; i < moves.size(); i++){
+            Location loc = moves.get(i);
+            if(board[loc.row][loc.col]!=null && board[loc.row][loc.col].getType() == Piece.PieceType.KING){
+                switchTurn();
+                return true;
+            }
+        }
+        switchTurn();
+        return false;
+    }
+
+
     private static void initializePieces(){
         initializePawns();
         initializeRooks();

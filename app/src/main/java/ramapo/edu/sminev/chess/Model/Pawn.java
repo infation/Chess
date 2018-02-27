@@ -50,7 +50,8 @@ public class Pawn extends Piece {
             moves.add(new Location(a_loc.row-1,a_loc.col));
         //If the pawn is in the initial place it can move 1 more square ahead
         if(a_loc.row == 6)
-            moves.add(new Location(4, a_loc.col));
+            if(GameState.getBoard()[4][a_loc.col]==null)
+                moves.add(new Location(4, a_loc.col));
 
         return moves;
     }
@@ -71,7 +72,8 @@ public class Pawn extends Piece {
             moves.add(new Location(a_loc.row+1,a_loc.col));
         //If the pawn is in the initial place it can move 1 more square ahead
         if(a_loc.row == 1)
-            moves.add(new Location(3, a_loc.col));
+            if(GameState.getBoard()[3][a_loc.col]==null)
+                moves.add(new Location(3, a_loc.col));
 
         return moves;
     }

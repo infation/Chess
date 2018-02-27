@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.Vector;
 
@@ -18,6 +19,7 @@ public class BoardView {
     private static final int TAN = Color.rgb(172,150,120);
     private static final int BROWN = Color.rgb(129,92,10);
     private static LinearLayout board;
+    private static TextView turn;
 
     public BoardView(){
 
@@ -26,7 +28,8 @@ public class BoardView {
     public static void initializeLayout(GameActivity activity){
 
         board = activity.findViewById(R.id.board);
-
+        turn = activity.findViewById(R.id.turn);
+        turn.setText("Turn: Human");
         for(int i = 0; i < 8; i++){
             LinearLayout row = new LinearLayout(activity);
             row.setWeightSum(8);
@@ -94,6 +97,16 @@ public class BoardView {
     public static void update(Location oldLoc, Location newLoc){
         updateLocation(newLoc);
         clearLocation(oldLoc);
+        updateTurnView();
+    }
+
+    private static void updateTurnView(){
+        if(GameState.getTurn() == 0){
+            turn.setText("Turn: Computer");
+        }
+        else{
+            turn.setText("Turn: Human");
+        }
     }
 
     private static void updateLocation(Location loc){
