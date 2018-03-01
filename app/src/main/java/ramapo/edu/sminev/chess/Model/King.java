@@ -32,8 +32,72 @@ public class King extends Piece {
                 moves.add(new Location(row, col));
             }
         }
-        return getAvailableMoves(a_loc, moves);
+        return getAvailableMoves(a_loc,moves);
     }
 
+    public Vector<Location> getMovesWithoutCheck(Location a_loc){
+        Vector<Location> moves = new Vector<>();
+        for (int row = a_loc.row - 1; row < a_loc.row + 2; row++) {
+
+            //If out of bounds
+            if (row < 0 || row > 7) continue;
+
+            for (int col = a_loc.col - 1; col < a_loc.col+ 2; col++) {
+                //If outside of bounds of board
+                if (col < 0 || col > 7) continue;
+                //Same location
+                if (row == a_loc.row && col == a_loc.col) continue;
+                moves.add(new Location(row, col));
+            }
+        }
+
+        for (int i = 0; i < moves.size(); i++) {
+            Location loc = moves.get(i);
+            //int color = GameState.getBoard()[a_loc.row][a_loc.col].getColor();
+            if (GameState.getBoard()[loc.row][loc.col] != null && GameState.getBoard()[loc.row][loc.col].getColor() == getColor())
+                moves.remove(i);
+        }
+        return moves;
+    }
+
+
+    private Vector<Location> getAvailableMoves(Location a_loc, Vector<Location> a_moves) {
+        Vector<Location> moves = new Vector<>();
+        for (int i = 0; i < a_moves.size(); i++) {
+            Location loc = a_moves.get(i);
+            //int color = GameState.getBoard()[a_loc.row][a_loc.col].getColor();
+            if (GameState.getBoard()[loc.row][loc.col] != null && GameState.getBoard()[loc.row][loc.col].getColor() == getColor())
+                continue;
+            Piece piece = GameState.getBoard()[loc.row][loc.col];
+            GameState.startSimulation(a_loc, loc);
+            if(!isInCheck(loc)){
+                moves.add(loc);
+            }
+            GameState.endSimulation(a_loc, loc, piece);
+        }
+        return moves;
+    }
+
+    public boolean isInCheck(Location a_loc){
+        Vector<Location> moves = new Vector<>();
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
+                if(GameState.getBoard()[i][j]!=null && GameState.getBoard()[i][j].getColor() == getOppositeColor())
+                    if(GameState.getBoard()[i][j].getType()!=PieceType.KING)
+                        moves.addAll(GameState.getBoard()[i][j].getPredefinedMoves(new Location(i,j)));
+                    else{
+                        moves.addAll(((King)GameState.getBoard()[i][j]).getMovesWithoutCheck(new Location(i,j)));
+                    }
+            }
+        }
+
+        for(int i = 0; i < moves.size(); i++){
+            Location loc = moves.get(i);
+            if(loc.row == a_loc.row && loc.col == a_loc.col){
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

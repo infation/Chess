@@ -30,7 +30,6 @@ public class Knight extends Piece {
         moves.addAll(processBottomRight(a_loc));
         for(int i = 0; i < moves.size(); i++){
             Location loc = moves.get(i);
-            Location.toString(loc);
             if(GameState.getBoard()[loc.row][loc.col]!=null && GameState.getBoard()[loc.row][loc.col].getColor()==getColor()) {
                 moves.remove(i);
                 i--;

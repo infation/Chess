@@ -44,19 +44,15 @@ public class GameActivity extends AppCompatActivity{
             }
             else{
                 GameState.updateState(oldLoc, Location.parseId(view.getId()));
-                /*if(GameState.isKingInCheck()){
+                if(GameState.isCheck()){
                     Toast.makeText(GameActivity.this, "King in check", Toast.LENGTH_LONG).show();
-                }*/
+                }
                 //boardView.updateView(boardState);
                 clickCount = false;
             }
         }
 
     });
-
-    public void checkRules(){
-
-    }
 
 }
 

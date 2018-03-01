@@ -27,9 +27,6 @@ public class Pawn extends Piece {
         else{
             moves = processWhiteMoves(a_loc);
         }
-        for(int i = 0 ; i<moves.size();i++){
-            Location.toString(moves.get(i));
-        }
         return moves;
     }
 

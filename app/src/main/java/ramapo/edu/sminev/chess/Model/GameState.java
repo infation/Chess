@@ -13,6 +13,17 @@ public class GameState {
     //private static Player[] players;
     private static Piece board[][];
     private static int turn;
+    private static boolean isCheck;
+    private static Piece simulatedMove = null;
+
+    public static void setIsCheck(boolean a_isCheck){
+        isCheck = a_isCheck;
+    }
+
+    public static boolean isCheck(){
+        return isCheck;
+    }
+
     public static void initializeGame(){
         //players = new Player[2];
         //players[0] = new Human();
@@ -25,6 +36,7 @@ public class GameState {
         }
         turn = 1;
         initializePieces();
+        isCheck = false;
     }
 
 
@@ -63,37 +75,47 @@ public class GameState {
                     //BoardView.clearView(a_oldLoc.convertToId());
                     //BoardView.updateMove();
                     BoardView.update(oldLoc, newLoc);
+                    isKingInCheck();
                 }
             }
         }
 
     }
 
+    public static void startSimulation(Location oldLoc, Location newLoc) {
+        //if(board[oldLoc.row][oldLoc.col] != null) {
+        board[newLoc.row][newLoc.col] = board[oldLoc.row][oldLoc.col];
+        board[oldLoc.row][oldLoc.col] = null;
+    }
+
+    public static void endSimulation(Location oldLoc, Location newLoc, Piece a_piece){
+        board[oldLoc.row][oldLoc.col] = board[newLoc.row][newLoc.col];
+        board[newLoc.row][newLoc.col] = a_piece;
+    }
+
+    public static void isKingInCheck(){
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
+                if(board[i][j]!=null&& board[i][j].getType()== Piece.PieceType.KING && board[i][j].getColor()==turn ) {
+                    boolean check = ((King)board[i][j]).isInCheck(new Location(i,j));
+                    setIsCheck(check);
+                    System.out.println(check);
+                }
+            }
+        }
+    }
+
     public static boolean isCorrectSelection(Location a_loc){
+        if(isCheck){
+            if(board[a_loc.row][a_loc.col]!=null&&board[a_loc.row][a_loc.col].getColor()==turn && board[a_loc.row][a_loc.col].getType()== Piece.PieceType.KING){
+                return true;
+            }
+            return false;
+        }
+
         if(board[a_loc.row][a_loc.col]!=null&&board[a_loc.row][a_loc.col].getColor()==turn){
             return true;
         }
-        return false;
-    }
-
-    public static boolean isKingInCheck(){
-        switchTurn();
-        Vector<Location> moves = new Vector<>();
-        for(int i = 0; i < 8; i++){
-            for(int j = 0; j < 8; j++){
-                if(board[i][j]!=null && board[i][j].getColor()== turn)
-                    moves.addAll(board[i][j].getPredefinedMoves(new Location(i,j)));
-            }
-        }
-
-        for(int i = 0; i < moves.size(); i++){
-            Location loc = moves.get(i);
-            if(board[loc.row][loc.col]!=null && board[loc.row][loc.col].getType() == Piece.PieceType.KING){
-                switchTurn();
-                return true;
-            }
-        }
-        switchTurn();
         return false;
     }
 
