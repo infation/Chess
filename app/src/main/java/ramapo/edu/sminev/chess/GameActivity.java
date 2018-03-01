@@ -36,6 +36,7 @@ public class GameActivity extends AppCompatActivity{
     public View.OnClickListener buttonHandler = (new View.OnClickListener() {
         public void onClick(View view){
             if(!clickCount) {
+
                 if(GameState.isCorrectSelection(Location.parseId(view.getId()))) {
                     oldLoc = Location.parseId(view.getId());
                     clickCount = true;
@@ -44,9 +45,14 @@ public class GameActivity extends AppCompatActivity{
             }
             else{
                 GameState.updateState(oldLoc, Location.parseId(view.getId()));
-                if(GameState.isCheck()){
-                    Toast.makeText(GameActivity.this, "King in check", Toast.LENGTH_LONG).show();
+                if(GameState.isCheckMate()){
+                    Toast.makeText(GameActivity.this, "CheckMate!!!!!!!", Toast.LENGTH_LONG).show();
+                    //BoardView.initializeLayout(GameActivity.this);
                 }
+                if(GameState.isCheck()){
+                    Toast.makeText(GameActivity.this, "King in check", Toast.LENGTH_SHORT).show();
+                }
+
                 //boardView.updateView(boardState);
                 clickCount = false;
             }

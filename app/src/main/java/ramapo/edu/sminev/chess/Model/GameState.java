@@ -66,6 +66,7 @@ public class GameState {
     public static void updateState(Location oldLoc, Location newLoc){
         BoardView.clearMoves(oldLoc);
         Vector<Location> moves = board[oldLoc.row][oldLoc.col].getPredefinedMoves(oldLoc);
+        board[oldLoc.row][oldLoc.col].simulateMoves(moves, oldLoc);
         for(int i = 0; i < moves.size(); i++){
             if(newLoc.row == moves.get(i).row && newLoc.col == moves.get(i).col){
                 if(board[oldLoc.row][oldLoc.col] != null) {
@@ -75,7 +76,7 @@ public class GameState {
                     //BoardView.clearView(a_oldLoc.convertToId());
                     //BoardView.updateMove();
                     BoardView.update(oldLoc, newLoc);
-                    isKingInCheck();
+                    setIsCheck(isKingInCheck());
                 }
             }
         }
@@ -93,27 +94,51 @@ public class GameState {
         board[newLoc.row][newLoc.col] = a_piece;
     }
 
-    public static void isKingInCheck(){
+    public static boolean isKingInCheck(){
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++){
                 if(board[i][j]!=null&& board[i][j].getType()== Piece.PieceType.KING && board[i][j].getColor()==turn ) {
-                    boolean check = ((King)board[i][j]).isInCheck(new Location(i,j));
-                    setIsCheck(check);
-                    System.out.println(check);
+                    return ((King)board[i][j]).isInCheck(new Location(i,j));
+                    //System.out.println(check);
                 }
             }
         }
+        return false;
+    }
+
+    public static boolean isCheckMate(){
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
+                if(board[i][j]!=null && board[i][j].getColor()==turn ) {
+                    Vector<Location> moves =board[i][j].getPredefinedMoves(new Location(i,j));
+                    for(int k = 0; k<moves.size();k++){
+                        board[i][j].simulateMoves(moves, new Location(i,j));
+                    }
+                    if(moves.size()!=0){
+                        return false;
+                    }
+                    //return ((King)board[i][j]).isInCheck(new Location(i,j));
+                    //System.out.println(check);
+                }
+            }
+        }
+        return true;
+    }
+
+    public static Vector<Location> getPieceMovesUnderCheck(Location a_loc){
+        Vector<Location> moves =board[a_loc.row][a_loc.col].getPredefinedMoves(a_loc);
+        board[a_loc.row][a_loc.col].simulateMoves(moves, a_loc);
+        return moves;
     }
 
     public static boolean isCorrectSelection(Location a_loc){
-        if(isCheck){
-            if(board[a_loc.row][a_loc.col]!=null&&board[a_loc.row][a_loc.col].getColor()==turn && board[a_loc.row][a_loc.col].getType()== Piece.PieceType.KING){
+        if(board[a_loc.row][a_loc.col]!=null&&board[a_loc.row][a_loc.col].getColor()==turn){
+            if(isCheck){
+                if(getPieceMovesUnderCheck(a_loc).size()==0){
+                    return false;
+                }
                 return true;
             }
-            return false;
-        }
-
-        if(board[a_loc.row][a_loc.col]!=null&&board[a_loc.row][a_loc.col].getColor()==turn){
             return true;
         }
         return false;

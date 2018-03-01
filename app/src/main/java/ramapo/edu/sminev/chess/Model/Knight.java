@@ -43,8 +43,9 @@ public class Knight extends Piece {
         int row = a_loc.row - 2;
         int col = a_loc.col - 1;
         for (int i = 0; i < 2; i++) {
-            if (row < 0 || col < 0) continue;
-            moves.add(new Location(row, col));
+            if (row < 0 || col < 0);
+            else
+                moves.add(new Location(row, col));
             row++;
             col--;
         }
@@ -56,8 +57,9 @@ public class Knight extends Piece {
         int row = a_loc.row - 2;
         int col = a_loc.col + 1;
         for (int i = 0; i < 2; i++) {
-            if (row < 0 || col > 7) continue;
-            moves.add(new Location(row, col));
+            if (row < 0 || col > 7);
+            else
+                moves.add(new Location(row, col));
             row++;
             col++;
         }
@@ -69,8 +71,9 @@ public class Knight extends Piece {
         int row = a_loc.row + 2;
         int col = a_loc.col - 1;
         for (int i = 0; i < 2; i++) {
-            if (row > 7 || col < 0) continue;
-            moves.add(new Location(row, col));
+            if (row > 7 || col < 0);
+            else
+                moves.add(new Location(row, col));
             row--;
             col--;
         }
@@ -82,8 +85,9 @@ public class Knight extends Piece {
         int row = a_loc.row + 2;
         int col = a_loc.col + 1;
         for (int i = 0; i < 2; i++) {
-            if (row > 7 || col > 7) continue;
-            moves.add(new Location(row, col));
+            if (row > 7 || col > 7);
+            else
+                moves.add(new Location(row, col));
             row--;
             col++;
         }

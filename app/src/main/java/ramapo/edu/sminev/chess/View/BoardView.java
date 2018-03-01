@@ -123,6 +123,7 @@ public class BoardView {
 
     public static void showMoves(Location a_loc){
         Vector<Location> moves = GameState.getBoard()[a_loc.row][a_loc.col].getPredefinedMoves(a_loc);
+        GameState.getBoard()[a_loc.row][a_loc.col].simulateMoves(moves,a_loc);
         for(int i = 0; i < moves.size(); i++){
             ImageButton b = board.findViewById(Location.convertToId(moves.get(i)));
             b.setForeground(board.getResources().getDrawable(android.R.drawable.ic_delete));
