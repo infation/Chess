@@ -35,6 +35,18 @@ public class King extends Piece {
         return getAvailableMoves(a_loc,moves);
     }
 
+    public Location castling(Location a_loc){
+        Piece piece = GameState.getBoard()[a_loc.row][a_loc.col];
+        if(!piece.getIsMoved()&&!GameState.isCheck()){
+            int row = getColor()*7;
+            if(!GameState.getBoard()[row][7].getIsMoved()&&GameState.getBoard()[row][6]==null && GameState.getBoard()[row][5] == null)
+                return new Location(row,6);
+            if(!GameState.getBoard()[row][0].getIsMoved()&&GameState.getBoard()[row][1]==null && GameState.getBoard()[row][2] == null&&GameState.getBoard()[row][3]==null)
+                return new Location(row,2);
+        }
+        return null;
+    }
+
     public Vector<Location> getMovesWithoutCheck(Location a_loc){
         Vector<Location> moves = new Vector<>();
         for (int row = a_loc.row - 1; row < a_loc.row + 2; row++) {
@@ -74,6 +86,10 @@ public class King extends Piece {
                 moves.add(loc);
             }
             GameState.endSimulation(a_loc, loc, piece);
+        }
+        Location castling = castling(a_loc);
+        if(castling!=null){
+            moves.add(castling);
         }
         return moves;
     }

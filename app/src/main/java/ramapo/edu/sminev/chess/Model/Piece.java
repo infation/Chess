@@ -7,6 +7,7 @@ public class Piece {
     public enum PieceType {PAWN, ROOK, BISHOP, KNIGHT, QUEEN, KING};
     private int m_color;
     private int m_drawableId;
+    private boolean isMoved;
     private PieceType m_type;
 
     public Piece(){
@@ -14,6 +15,14 @@ public class Piece {
         m_color = 0;
     }
 
+
+    public void setMoved(){
+        isMoved = true;
+    }
+
+    public boolean getIsMoved(){
+        return isMoved;
+    }
 
     public int getColor(){ return m_color;}
 

@@ -94,6 +94,17 @@ public class BoardView {
         }
     }
 
+    public static void updateAll(){
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++) {
+                if (GameState.getBoard()[i][j] != null) {
+                    ImageButton piece = board.findViewById(Location.convertToId(new Location(i, j)));
+                    piece.setImageResource(GameState.getBoard()[i][j].getDrawableId());
+                }
+            }
+        }
+    }
+
     public static void update(Location oldLoc, Location newLoc){
         updateLocation(newLoc);
         clearLocation(oldLoc);
@@ -114,7 +125,7 @@ public class BoardView {
         piece.setImageResource(GameState.getBoard()[loc.row][loc.col].getDrawableId());
     }
 
-    private static void clearLocation(Location loc){
+    public static void clearLocation(Location loc){
         ImageButton piece = board.findViewById(Location.convertToId(loc));
         piece.setImageResource(android.R.color.transparent);
     }

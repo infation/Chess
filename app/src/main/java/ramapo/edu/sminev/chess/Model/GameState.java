@@ -65,11 +65,17 @@ public class GameState {
 
     public static void updateState(Location oldLoc, Location newLoc){
         BoardView.clearMoves(oldLoc);
+        if(checkIfCastlingMove(oldLoc, newLoc)) {
+            switchTurn();
+            setIsCheck(isKingInCheck());
+            return;
+        }
         Vector<Location> moves = board[oldLoc.row][oldLoc.col].getPredefinedMoves(oldLoc);
         board[oldLoc.row][oldLoc.col].simulateMoves(moves, oldLoc);
         for(int i = 0; i < moves.size(); i++){
             if(newLoc.row == moves.get(i).row && newLoc.col == moves.get(i).col){
                 if(board[oldLoc.row][oldLoc.col] != null) {
+                    board[oldLoc.row][oldLoc.col].setMoved();
                     board[newLoc.row][newLoc.col] = board[oldLoc.row][oldLoc.col];
                     board[oldLoc.row][oldLoc.col] = null;
                     switchTurn();
@@ -80,7 +86,40 @@ public class GameState {
                 }
             }
         }
+    }
 
+    public static boolean checkIfCastlingMove(Location oldLoc, Location newLoc){
+        if(board[oldLoc.row][oldLoc.col]!=null && board[oldLoc.row][oldLoc.col].getType()== Piece.PieceType.KING){
+            Vector<Location> moves = board[oldLoc.row][oldLoc.col].getPredefinedMoves(oldLoc);
+            for(int i = 0; i < moves.size(); i++) {
+                if(moves.get(i).row == newLoc.row && moves.get(i).col == newLoc.col) {
+                    if (oldLoc.row == newLoc.row) {
+                        if (oldLoc.col + 2 == newLoc.col) {
+                            board[oldLoc.row][oldLoc.col].setMoved();
+                            board[newLoc.row][newLoc.col] = board[oldLoc.row][oldLoc.col];
+                            board[oldLoc.row][oldLoc.col + 1] = board[oldLoc.row][7];
+                            board[oldLoc.row][7] = null;
+                            BoardView.updateAll();
+                            BoardView.clearLocation(oldLoc);
+                            BoardView.clearLocation(new Location(oldLoc.row, 7));
+                            return true;
+                        }
+                        if (oldLoc.col - 2 == newLoc.col) {
+                            board[oldLoc.row][oldLoc.col].setMoved();
+                            board[newLoc.row][newLoc.col] = board[oldLoc.row][oldLoc.col];
+                            board[oldLoc.row][oldLoc.col - 1] = board[oldLoc.row][0];
+                            board[oldLoc.row][0] = null;
+                            BoardView.updateAll();
+                            BoardView.clearLocation(oldLoc);
+                            BoardView.clearLocation(new Location(oldLoc.row, 0));
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+        return false;
     }
 
     public static void startSimulation(Location oldLoc, Location newLoc) {
