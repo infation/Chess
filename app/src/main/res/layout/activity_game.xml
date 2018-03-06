@@ -3,17 +3,53 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:layout_marginBottom="150dp"
-    android:layout_marginTop="40dp"
+    android:layout_marginTop="15dp"
     android:layout_marginRight="10dp"
     android:layout_marginLeft="10dp"
-    android:id="@+id/board"
-    android:weightSum="8"
     android:orientation="vertical">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Computer Graveyard"/>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:id="@+id/computer_graveyard"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:layout_marginBottom="15dp" />
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:id="@+id/board"
+        android:layout_weight="8"
+        android:orientation="vertical"
+        android:layout_marginBottom="15dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Human Graveyard"/>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:id="@+id/human_graveyard"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:layout_marginBottom="15dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id = "@+id/turn"
-        android:text="Turn: "/>
+        android:text="Turn: "
+        android:layout_marginBottom="15dp"/>
+
+
 </LinearLayout>

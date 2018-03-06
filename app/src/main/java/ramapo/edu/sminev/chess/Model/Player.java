@@ -8,6 +8,21 @@ import java.util.Vector;
 
 public class Player {
 
+
+    private Vector<Piece> graveyard;
+
+    public Player(){
+        graveyard = new Vector<>();
+    }
+
+    public void addPiece(Piece a_piece){
+        graveyard.add(a_piece);
+    }
+
+    public Vector<Piece> getGraveyard(){
+        return graveyard;
+    }
+
     /*
     private Vector<Piece> pieces;
 

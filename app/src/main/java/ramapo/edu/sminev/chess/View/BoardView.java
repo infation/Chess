@@ -3,6 +3,7 @@ package ramapo.edu.sminev.chess.View;
 import android.graphics.Color;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -40,6 +41,9 @@ public class BoardView {
             for(int j = 0; j < 8; j++){
                 ImageButton square = new ImageButton(activity);
                 square.setLayoutParams(params);
+                square.setPadding(2,2,2,2);
+                square.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                square.setAdjustViewBounds(true);
                 //square.setImageResource(R.drawable.black_pawn);
                 if ((j+i)%2==0)
                     square.setBackgroundColor(TAN);

@@ -1,6 +1,8 @@
 package ramapo.edu.sminev.chess.Model;
 
 
+import java.util.Vector;
+
 public class Human extends Player{
 
     public Human(){

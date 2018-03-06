@@ -10,7 +10,7 @@ import ramapo.edu.sminev.chess.View.BoardView;
 public class GameState {
 
 
-    //private static Player[] players;
+    private static Player[] players;
     private static Piece board[][];
     private static int turn;
     private static boolean isCheck;
@@ -25,9 +25,9 @@ public class GameState {
     }
 
     public static void initializeGame(){
-        //players = new Player[2];
-        //players[0] = new Human();
-        //players[1] = new Computer();
+        players = new Player[2];
+        players[0] = new Human();
+        players[1] = new Computer();
         board = new Piece[8][8];
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++){
@@ -76,6 +76,9 @@ public class GameState {
             if(newLoc.row == moves.get(i).row && newLoc.col == moves.get(i).col){
                 if(board[oldLoc.row][oldLoc.col] != null) {
                     board[oldLoc.row][oldLoc.col].setMoved();
+                    if(board[newLoc.row][newLoc.col]!=null){
+                        players[board[newLoc.row][newLoc.col].getColor()].addPiece(board[newLoc.row][newLoc.col]);
+                    }
                     board[newLoc.row][newLoc.col] = board[oldLoc.row][oldLoc.col];
                     board[oldLoc.row][oldLoc.col] = null;
                     switchTurn();
@@ -98,6 +101,7 @@ public class GameState {
                             board[oldLoc.row][oldLoc.col].setMoved();
                             board[newLoc.row][newLoc.col] = board[oldLoc.row][oldLoc.col];
                             board[oldLoc.row][oldLoc.col + 1] = board[oldLoc.row][7];
+                            board[oldLoc.row][oldLoc.col] = null;
                             board[oldLoc.row][7] = null;
                             BoardView.updateAll();
                             BoardView.clearLocation(oldLoc);
@@ -108,6 +112,7 @@ public class GameState {
                             board[oldLoc.row][oldLoc.col].setMoved();
                             board[newLoc.row][newLoc.col] = board[oldLoc.row][oldLoc.col];
                             board[oldLoc.row][oldLoc.col - 1] = board[oldLoc.row][0];
+                            board[oldLoc.row][oldLoc.col] = null;
                             board[oldLoc.row][0] = null;
                             BoardView.updateAll();
                             BoardView.clearLocation(oldLoc);
@@ -163,6 +168,11 @@ public class GameState {
         }
         return true;
     }
+
+    /*public static boolean isPromotionMove(Location oldLoc, Location newLoc){
+        return true;
+    }*/
+
 
     public static Vector<Location> getPieceMovesUnderCheck(Location a_loc){
         Vector<Location> moves =board[a_loc.row][a_loc.col].getPredefinedMoves(a_loc);
@@ -229,6 +239,11 @@ public class GameState {
         board[0][7] = new Rook(0,0,7);
         board[7][0] = new Rook(1,7,0);
         board[7][7] = new Rook(1,7,7);
+    }
+
+
+    public static Player[] getPlayers(){
+        return players;
     }
 /*
     public Piece getSquare(int x, int y){
