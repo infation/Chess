@@ -58,6 +58,22 @@ public class GameActivity extends AppCompatActivity{
                 // the user clicked on colors[which]
                 GameState.updateStateForPromotion(oldLoc, newLoc, promoteTo(which));
                 GraveyardView.updateView(GameActivity.this);
+                if (GameState.isCheckMate()) {
+                    Toast.makeText(GameActivity.this, "CheckMate!!!!!!!", Toast.LENGTH_LONG).show();
+                    //BoardView.initializeLayout(GameActivity.this);
+                }
+                if (GameState.isCheck()) {
+                    Toast.makeText(GameActivity.this, "King in check", Toast.LENGTH_SHORT).show();
+                }
+                GameState.getPlayers()[0].play();
+                GraveyardView.updateView(GameActivity.this);
+                if (GameState.isCheckMate()) {
+                    Toast.makeText(GameActivity.this, "CheckMate!!!!!!!", Toast.LENGTH_LONG).show();
+                    //BoardView.initializeLayout(GameActivity.this);
+                }
+                if (GameState.isCheck()) {
+                    Toast.makeText(GameActivity.this, "King in check", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         builder.show();

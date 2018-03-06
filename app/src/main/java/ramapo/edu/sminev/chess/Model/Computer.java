@@ -28,7 +28,6 @@ public class Computer extends Player {
         }
 
         if(pieces.size()==0){
-            GameState.isCheckMate();
             return;
         }
         Random rand= new Random();
