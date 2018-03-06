@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import java.util.Vector;
 
+import ramapo.edu.sminev.chess.GameActivity;
 import ramapo.edu.sminev.chess.View.BoardView;
 
 public class GameState {
@@ -76,8 +77,18 @@ public class GameState {
             if(newLoc.row == moves.get(i).row && newLoc.col == moves.get(i).col){
                 if(board[oldLoc.row][oldLoc.col] != null) {
                     board[oldLoc.row][oldLoc.col].setMoved();
+                    doublePawnMove(oldLoc, newLoc);
                     if(board[newLoc.row][newLoc.col]!=null){
                         players[board[newLoc.row][newLoc.col].getColor()].addPiece(board[newLoc.row][newLoc.col]);
+                    }
+                    //If a promotion move
+                    if(isPromotionMove(oldLoc, newLoc))
+                        board[oldLoc.row][oldLoc.col] = new Queen(board[oldLoc.row][oldLoc.col].getColor());
+                    //If an enpassant move
+                    if(isEnPassant(oldLoc, newLoc)) {
+                        players[board[oldLoc.row][newLoc.col].getColor()].addPiece(board[oldLoc.row][newLoc.col]);
+                        board[oldLoc.row][newLoc.col] = null;
+                        BoardView.clearLocation(new Location(oldLoc.row, newLoc.col));
                     }
                     board[newLoc.row][newLoc.col] = board[oldLoc.row][oldLoc.col];
                     board[oldLoc.row][oldLoc.col] = null;
@@ -87,6 +98,24 @@ public class GameState {
                     BoardView.update(oldLoc, newLoc);
                     setIsCheck(isKingInCheck());
                 }
+            }
+        }
+    }
+
+    public static void doublePawnMove(Location oldLoc, Location newLoc){
+        if(board[oldLoc.row][oldLoc.col].getType() == Piece.PieceType.PAWN){
+            if(newLoc.row == oldLoc.row + 2 || newLoc.row == oldLoc.row - 2){
+
+                for(int i = oldLoc.col-1 ; i < oldLoc.col+2; i+=2) {
+                    if(i < 0 || i > 7) continue;
+                    if (board[newLoc.row][i] != null
+                            && board[newLoc.row][i].getType() == Piece.PieceType.PAWN
+                            && board[newLoc.row][i].getColor() == board[oldLoc.row][oldLoc.col].getOppositeColor())
+                        ((Pawn) board[oldLoc.row][oldLoc.col]).setDoubleMove(true);
+                }
+            }
+            else{
+                ((Pawn)board[oldLoc.row][oldLoc.col]).setDoubleMove(false);
             }
         }
     }
@@ -169,9 +198,28 @@ public class GameState {
         return true;
     }
 
-    /*public static boolean isPromotionMove(Location oldLoc, Location newLoc){
-        return true;
-    }*/
+    public static boolean isEnPassant(Location oldLoc, Location newLoc){
+        if(board[oldLoc.row][oldLoc.col].getType() == Piece.PieceType.PAWN&&board[newLoc.row][newLoc.col] == null){
+            if(newLoc.row == oldLoc.row - 1 && newLoc.col == oldLoc.col - 1) return true;
+            if(newLoc.row == oldLoc.row - 1 && newLoc.col == oldLoc.col + 1) return true;
+            if(newLoc.row == oldLoc.row + 1 && newLoc.col == oldLoc.col - 1) return true;
+            if(newLoc.row == oldLoc.row + 1 && newLoc.col == oldLoc.col + 1) return true;
+        }
+        return false;
+    }
+
+
+    public static boolean isPromotionMove(Location oldLoc, Location newLoc){
+        if(board[oldLoc.row][oldLoc.col].getType()== Piece.PieceType.PAWN){
+            if(board[oldLoc.row][oldLoc.col].getColor() == 0 && newLoc.row == 7){
+                return true;
+            }
+            if(board[oldLoc.row][oldLoc.col].getColor() == 1 && newLoc.row == 0){
+                return true;
+            }
+        }
+        return false;
+    }
 
 
     public static Vector<Location> getPieceMovesUnderCheck(Location a_loc){
@@ -205,40 +253,40 @@ public class GameState {
 
     private static void initializePawns(){
         for(int i= 0; i < 8; i++){
-            board[1][i] = new Pawn(0, 1, i);
-            board[6][i] = new Pawn(1, 6, i);
+            board[1][i] = new Pawn(0);
+            board[6][i] = new Pawn(1);
         }
     }
 
     private static void initializeQueens(){
-        board[0][3] = new Queen(0,0,3);
-        board[7][3] = new Queen(1, 7,3);
+        board[0][3] = new Queen(0);
+        board[7][3] = new Queen(1);
     }
 
     private static void initializeKings(){
-        board[0][4] = new King(0,0,4);
-        board[7][4] = new King(1,7,4);
+        board[0][4] = new King(0);
+        board[7][4] = new King(1);
     }
 
     private static void initializeBishops(){
-        board[0][2] = new Bishop(0,0,2);
-        board[0][5] = new Bishop(0,0,5);
-        board[7][2] = new Bishop(1,7,2);
-        board[7][5] = new Bishop(1,7,5);
+        board[0][2] = new Bishop(0);
+        board[0][5] = new Bishop(0);
+        board[7][2] = new Bishop(1);
+        board[7][5] = new Bishop(1);
     }
 
     private static void initializeKnights(){
-        board[0][1] = new Knight(0,0,1);
-        board[0][6] = new Knight(0,0,6);
-        board[7][1] = new Knight(1,7,1);
-        board[7][6] = new Knight(1,7,6);
+        board[0][1] = new Knight(0);
+        board[0][6] = new Knight(0);
+        board[7][1] = new Knight(1);
+        board[7][6] = new Knight(1);
     }
 
     private static void initializeRooks(){
-        board[0][0] = new Rook(0,0,0);
-        board[0][7] = new Rook(0,0,7);
-        board[7][0] = new Rook(1,7,0);
-        board[7][7] = new Rook(1,7,7);
+        board[0][0] = new Rook(0);
+        board[0][7] = new Rook(0);
+        board[7][0] = new Rook(1);
+        board[7][7] = new Rook(1);
     }
 
 

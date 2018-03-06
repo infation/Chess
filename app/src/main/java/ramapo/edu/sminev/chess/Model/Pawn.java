@@ -7,9 +7,12 @@ import ramapo.edu.sminev.chess.R;
 
 public class Pawn extends Piece {
 
-    public Pawn(int a_color, int a_row, int a_col){
+    private boolean dmove;
+
+    public Pawn(int a_color){
         super();
         this.setType(PieceType.PAWN);
+        dmove = false;
         setColor(a_color);
         if(a_color == 0){
             setDrawableId(R.drawable.black_pawn);
@@ -20,15 +23,19 @@ public class Pawn extends Piece {
     }
 
     public Vector<Location> getPredefinedMoves(Location a_loc) {
-        Vector<Location> moves = new Vector<>();
         if(getColor() == 0) {
-            moves = processBlackMoves(a_loc);
+            return processBlackMoves(a_loc);
         }
         else{
-            moves = processWhiteMoves(a_loc);
+            return processWhiteMoves(a_loc);
         }
-        return moves;
     }
+
+    public void setDoubleMove(boolean a_dmove){
+        dmove = a_dmove;
+    }
+
+    public boolean getDoubleMove() { return dmove; }
 
 
     private Vector<Location> processWhiteMoves(Location a_loc){
@@ -39,6 +46,10 @@ public class Pawn extends Piece {
             //White color pieces diagonally
             if(GameState.getBoard()[a_loc.row-1][i]!=null && GameState.getBoard()[a_loc.row-1][i].getColor() == 0)
                 moves.add(new Location(a_loc.row - 1, i));
+            //En passant
+            else if(GameState.getBoard()[a_loc.row][i]!=null && GameState.getBoard()[a_loc.row][i].getType() == PieceType.PAWN
+                    && GameState.getBoard()[a_loc.row][i].getColor() == 0 && ((Pawn)GameState.getBoard()[a_loc.row][i]).getDoubleMove())
+                moves.add(new Location(a_loc.row-1, i));
         }
         //If there is a piece in front of the pawn
         if(GameState.getBoard()[a_loc.row-1][a_loc.col]!=null)
@@ -61,6 +72,10 @@ public class Pawn extends Piece {
             //White color pieces diagonally
             if(GameState.getBoard()[a_loc.row+1][i]!=null && GameState.getBoard()[a_loc.row+1][i].getColor() == 1)
                 moves.add(new Location(a_loc.row + 1, i));
+            //En passant
+            else if(GameState.getBoard()[a_loc.row][i]!=null && GameState.getBoard()[a_loc.row][i].getType() == PieceType.PAWN
+                    && GameState.getBoard()[a_loc.row][i].getColor() == 1 && ((Pawn)GameState.getBoard()[a_loc.row][i]).getDoubleMove())
+                moves.add(new Location(a_loc.row+1, i));
         }
         //If there is a piece in front of the pawn
         if(GameState.getBoard()[a_loc.row+1][a_loc.col]!=null)

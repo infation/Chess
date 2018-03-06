@@ -6,7 +6,7 @@ import ramapo.edu.sminev.chess.R;
 
 public class King extends Piece {
 
-    public King(int a_color, int a_row, int a_col) {
+    public King(int a_color) {
         super();
         this.setType(PieceType.KING);
         setColor(a_color);

@@ -135,6 +135,10 @@ public class BoardView {
     }
 
 
+    public static LinearLayout getView(){
+        return board;
+    }
+
 
     public static void showMoves(Location a_loc){
         Vector<Location> moves = GameState.getBoard()[a_loc.row][a_loc.col].getPredefinedMoves(a_loc);

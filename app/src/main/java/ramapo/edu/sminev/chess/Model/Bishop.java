@@ -7,7 +7,7 @@ import ramapo.edu.sminev.chess.R;
 
 public class Bishop extends Piece {
 
-    public Bishop(int a_color, int a_row, int a_col){
+    public Bishop(int a_color){
         super();
         this.setType(PieceType.BISHOP);
         setColor(a_color);
