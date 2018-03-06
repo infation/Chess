@@ -1,5 +1,8 @@
 package ramapo.edu.sminev.chess.Model;
 
+import java.util.Random;
+import java.util.Vector;
+
 /**
  * Created by sminev on 2/22/18.
  */
@@ -10,6 +13,33 @@ public class Computer extends Player {
         super();
         //initializePieces();
     }
+
+    public void play(){
+        Vector<Location> pieces = new Vector<>();
+        for(int i = 0; i < 8; i++) {
+            for(int j = 0; j < 8; j++) {
+                if(GameState.getBoard()[i][j]!=null && GameState.getTurn() == GameState.getBoard()[i][j].getColor()) {
+                    Vector<Location> moves = GameState.getPieceMovesUnderCheck(new Location(i,j));
+                    if(moves.size()!= 0){
+                        pieces.add(new Location(i, j));
+                    }
+                }
+            }
+        }
+
+        if(pieces.size()==0){
+            GameState.isCheckMate();
+            return;
+        }
+        Random rand= new Random();
+        int randLoc = rand.nextInt(pieces.size());
+        Location oldLoc = pieces.get(randLoc);
+        Vector<Location> moves = GameState.getPieceMovesUnderCheck(oldLoc);
+        randLoc = rand.nextInt(moves.size());
+        Location newLoc = moves.get(randLoc);
+        GameState.updateState(oldLoc, newLoc);
+    }
+
     /*
     public void initializePieces(){
         initializePawns();

@@ -138,21 +138,30 @@ public class GameActivity extends AppCompatActivity{
                 }
             }
             else{
-                if(GameState.isPromotionMove(oldLoc, Location.parseId(view.getId())))
-                    showPopup(Location.parseId(view.getId()));
-                else {
-                    GameState.updateState(oldLoc, Location.parseId(view.getId()));
+                if(GameState.getTurn()== 1) {
+                    if (GameState.isPromotionMove(oldLoc, Location.parseId(view.getId())))
+                        showPopup(Location.parseId(view.getId()));
+                    else {
+                        GameState.updateState(oldLoc, Location.parseId(view.getId()));
+                        GraveyardView.updateView(GameActivity.this);
+                    }
+
+                    if (GameState.isCheckMate()) {
+                        Toast.makeText(GameActivity.this, "CheckMate!!!!!!!", Toast.LENGTH_LONG).show();
+                        //BoardView.initializeLayout(GameActivity.this);
+                    }
+                }
+                if (GameState.getTurn() == 0){
+                    GameState.getPlayers()[0].play();
                     GraveyardView.updateView(GameActivity.this);
+                    if (GameState.isCheckMate()) {
+                        Toast.makeText(GameActivity.this, "CheckMate!!!!!!!", Toast.LENGTH_LONG).show();
+                        //BoardView.initializeLayout(GameActivity.this);
+                    }
+                    if (GameState.isCheck()) {
+                        Toast.makeText(GameActivity.this, "King in check", Toast.LENGTH_SHORT).show();
+                    }
                 }
-
-                if (GameState.isCheckMate()) {
-                    Toast.makeText(GameActivity.this, "CheckMate!!!!!!!", Toast.LENGTH_LONG).show();
-                    //BoardView.initializeLayout(GameActivity.this);
-                }
-                if (GameState.isCheck()) {
-                    Toast.makeText(GameActivity.this, "King in check", Toast.LENGTH_SHORT).show();
-                }
-
                 //boardView.updateView(boardState);
                 clickCount = false;
             }

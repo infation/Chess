@@ -39,9 +39,9 @@ public class King extends Piece {
         Piece piece = GameState.getBoard()[a_loc.row][a_loc.col];
         if(!piece.getIsMoved()&&!GameState.isCheck()){
             int row = getColor()*7;
-            if(!GameState.getBoard()[row][7].getIsMoved()&&GameState.getBoard()[row][6]==null && GameState.getBoard()[row][5] == null)
+            if(GameState.getBoard()[row][7]!=null&&!GameState.getBoard()[row][7].getIsMoved()&&GameState.getBoard()[row][6]==null && GameState.getBoard()[row][5] == null)
                 return new Location(row,6);
-            if(!GameState.getBoard()[row][0].getIsMoved()&&GameState.getBoard()[row][1]==null && GameState.getBoard()[row][2] == null&&GameState.getBoard()[row][3]==null)
+            if(GameState.getBoard()[row][0]!=null&&!GameState.getBoard()[row][0].getIsMoved()&&GameState.getBoard()[row][1]==null && GameState.getBoard()[row][2] == null&&GameState.getBoard()[row][3]==null)
                 return new Location(row,2);
         }
         return null;

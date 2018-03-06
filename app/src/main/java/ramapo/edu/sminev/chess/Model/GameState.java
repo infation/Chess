@@ -1,11 +1,6 @@
 package ramapo.edu.sminev.chess.Model;
 
-
-import android.widget.Toast;
-
 import java.util.Vector;
-
-import ramapo.edu.sminev.chess.GameActivity;
 import ramapo.edu.sminev.chess.View.BoardView;
 
 public class GameState {
@@ -15,7 +10,6 @@ public class GameState {
     private static Piece board[][];
     private static int turn;
     private static boolean isCheck;
-    private static Piece simulatedMove = null;
 
     public static void setIsCheck(boolean a_isCheck){
         isCheck = a_isCheck;
@@ -27,8 +21,8 @@ public class GameState {
 
     public static void initializeGame(){
         players = new Player[2];
-        players[0] = new Human();
-        players[1] = new Computer();
+        players[0] = new Computer();
+        players[1] = new Human();
         board = new Piece[8][8];
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++){
@@ -53,16 +47,6 @@ public class GameState {
             turn = 0;
         }
     }
-    /*public void updateState(int a_oldId, int a_newId){
-
-        for(int i = 0; i < players[0].getPieces().size();i++){
-            if(players[0].getPieces().get(i).getCoords().convertToId() == a_oldId){
-                players[0].getPieces().get(i).setCoords(Coords.parseId(a_newId));
-                BoardView.clearView(a_oldId);
-                BoardView.updateView(players);
-            }
-        }
-    }*/
 
     public static void updateState(Location oldLoc, Location newLoc){
         BoardView.clearMoves(oldLoc);

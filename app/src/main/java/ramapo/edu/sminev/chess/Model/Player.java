@@ -23,6 +23,8 @@ public class Player {
         return graveyard;
     }
 
+    public void play(){}
+
     /*
     private Vector<Piece> pieces;
 

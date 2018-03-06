@@ -9,6 +9,8 @@ public class Human extends Player{
         super();
         //initializePieces();
     }
+
+    public void play(){};
     /*
     public void initializePieces(){
         initializePawns();
