@@ -102,6 +102,20 @@ public class GameState {
         }
     }
 
+    public static void updateStateForPromotion(Location oldLoc, Location newLoc, Piece piece){
+        BoardView.clearMoves(oldLoc);
+        if(board[newLoc.row][newLoc.col]!=null){
+            players[board[newLoc.row][newLoc.col].getColor()].addPiece(board[newLoc.row][newLoc.col]);
+        }
+        //If a promotion move
+        board[oldLoc.row][oldLoc.col] = piece;
+        board[newLoc.row][newLoc.col] = board[oldLoc.row][oldLoc.col];
+        board[oldLoc.row][oldLoc.col] = null;
+        switchTurn();
+        BoardView.update(oldLoc, newLoc);
+        setIsCheck(isKingInCheck());
+    }
+
     public static void doublePawnMove(Location oldLoc, Location newLoc){
         if(board[oldLoc.row][oldLoc.col].getType() == Piece.PieceType.PAWN){
             if(newLoc.row == oldLoc.row + 2 || newLoc.row == oldLoc.row - 2){
@@ -229,7 +243,7 @@ public class GameState {
     }
 
     public static boolean isCorrectSelection(Location a_loc){
-        if(board[a_loc.row][a_loc.col]!=null&&board[a_loc.row][a_loc.col].getColor()==turn){
+        if(board[a_loc.row][a_loc.col]!=null&&board[a_loc.row][a_loc.col].getColor()==turn&&board[a_loc.row][a_loc.col].getPredefinedMoves(a_loc).size()!=0){
             if(isCheck){
                 if(getPieceMovesUnderCheck(a_loc).size()==0){
                     return false;
@@ -293,12 +307,4 @@ public class GameState {
     public static Player[] getPlayers(){
         return players;
     }
-/*
-    public Piece getSquare(int x, int y){
-        return board[x][y];
-    }
-
-    public void checkMoves(){
-
-    }*/
 }

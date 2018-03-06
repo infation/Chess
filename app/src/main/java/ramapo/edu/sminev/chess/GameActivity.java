@@ -1,5 +1,7 @@
 package ramapo.edu.sminev.chess;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -14,9 +16,13 @@ import android.widget.Toast;
 
 import java.util.Vector;
 
+import ramapo.edu.sminev.chess.Model.Bishop;
 import ramapo.edu.sminev.chess.Model.GameState;
+import ramapo.edu.sminev.chess.Model.Knight;
 import ramapo.edu.sminev.chess.Model.Location;
 import ramapo.edu.sminev.chess.Model.Piece;
+import ramapo.edu.sminev.chess.Model.Queen;
+import ramapo.edu.sminev.chess.Model.Rook;
 import ramapo.edu.sminev.chess.View.BoardView;
 import ramapo.edu.sminev.chess.View.GraveyardView;
 
@@ -39,6 +45,36 @@ public class GameActivity extends AppCompatActivity{
         //ViewGroup grid = findViewById(R.id.board);
         //grid.addView(boardView);
 
+    }
+
+
+    public void showPopup(final Location newLoc) {
+        CharSequence pieces[] = new CharSequence[] {"Queen", "Knight", "Rook", "Bishop"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Pick a piece for promotion");
+        builder.setItems(pieces, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // the user clicked on colors[which]
+                GameState.updateStateForPromotion(oldLoc, newLoc, promoteTo(which));
+                GraveyardView.updateView(GameActivity.this);
+            }
+        });
+        builder.show();
+    }
+
+    public Piece promoteTo(int which){
+        switch(which){
+            case 0:
+                return new Queen(GameState.getTurn());
+            case 1:
+                return new Knight(GameState.getTurn());
+            case 2:
+                return new Rook(GameState.getTurn());
+            case 3:
+                return new Bishop(GameState.getTurn());
+        }
+        return null;
     }
 
     /*public void showPopup(){
@@ -97,20 +133,23 @@ public class GameActivity extends AppCompatActivity{
                 if(GameState.isCorrectSelection(Location.parseId(view.getId()))) {
                     oldLoc = Location.parseId(view.getId());
                     clickCount = true;
+
                     BoardView.showMoves(oldLoc);
                 }
             }
             else{
-                /*if(GameState.isPromotionMove(oldLoc, Location.parseId(view.getId()))){
-                  //  showPopup();
-                }*/
-                GameState.updateState(oldLoc, Location.parseId(view.getId()));
-                GraveyardView.updateView(GameActivity.this);
-                if(GameState.isCheckMate()){
+                if(GameState.isPromotionMove(oldLoc, Location.parseId(view.getId())))
+                    showPopup(Location.parseId(view.getId()));
+                else {
+                    GameState.updateState(oldLoc, Location.parseId(view.getId()));
+                    GraveyardView.updateView(GameActivity.this);
+                }
+
+                if (GameState.isCheckMate()) {
                     Toast.makeText(GameActivity.this, "CheckMate!!!!!!!", Toast.LENGTH_LONG).show();
                     //BoardView.initializeLayout(GameActivity.this);
                 }
-                if(GameState.isCheck()){
+                if (GameState.isCheck()) {
                     Toast.makeText(GameActivity.this, "King in check", Toast.LENGTH_SHORT).show();
                 }
 
