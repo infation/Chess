@@ -65,7 +65,6 @@ public class Piece {
             GameState.startSimulation(a_loc, loc);
             if(GameState.isKingInCheck()){
                 a_moves.remove(i);
-                Location.toString(loc);
                 i--;
             }
             GameState.endSimulation(a_loc, loc, piece);

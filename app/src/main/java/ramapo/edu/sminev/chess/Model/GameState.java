@@ -1,5 +1,7 @@
 package ramapo.edu.sminev.chess.Model;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 import ramapo.edu.sminev.chess.View.BoardView;
 
@@ -39,6 +41,14 @@ public class GameState {
         return board;
     }
     public static int getTurn(){ return turn; }
+    public static int getOppositeTurn(){
+        if(turn == 0){
+            return 1;
+        }
+        else {
+            return 0;
+        }
+    }
     public static void switchTurn() {
         if(turn == 0){
             turn = 1;
@@ -47,6 +57,7 @@ public class GameState {
             turn = 0;
         }
     }
+
 
     public static void updateState(Location oldLoc, Location newLoc){
         BoardView.clearMoves(oldLoc);
@@ -224,6 +235,12 @@ public class GameState {
         Vector<Location> moves =board[a_loc.row][a_loc.col].getPredefinedMoves(a_loc);
         board[a_loc.row][a_loc.col].simulateMoves(moves, a_loc);
         return moves;
+    }
+
+    public static int getNumPieceMoves(Location a_loc){
+        Vector<Location> moves =board[a_loc.row][a_loc.col].getPredefinedMoves(a_loc);
+        board[a_loc.row][a_loc.col].simulateMoves(moves, a_loc);
+        return moves.size();
     }
 
     public static boolean isCorrectSelection(Location a_loc){

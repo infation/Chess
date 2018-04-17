@@ -42,7 +42,7 @@ public class Pawn extends Piece {
         Vector<Location> moves = new Vector<>();
         for(int i = a_loc.col-1 ; i < a_loc.col+2; i+=2){
             //Out of bounds
-            if(i < 0 || i > 7) continue;
+            if(i < 0 || i > 7 || a_loc.row - 1 < 0) continue;
             //White color pieces diagonally
             if(GameState.getBoard()[a_loc.row-1][i]!=null && GameState.getBoard()[a_loc.row-1][i].getColor() == 0)
                 moves.add(new Location(a_loc.row - 1, i));
@@ -68,7 +68,7 @@ public class Pawn extends Piece {
         Vector<Location> moves = new Vector<>();
         for(int i = a_loc.col-1 ; i < a_loc.col+2; i+=2){
             //Out of bounds
-            if(i < 0 || i > 7) continue;
+            if(i < 0 || i > 7 || a_loc.row+1 > 7) continue;
             //White color pieces diagonally
             if(GameState.getBoard()[a_loc.row+1][i]!=null && GameState.getBoard()[a_loc.row+1][i].getColor() == 1)
                 moves.add(new Location(a_loc.row + 1, i));
