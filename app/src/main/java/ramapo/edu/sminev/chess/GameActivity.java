@@ -170,6 +170,7 @@ public class GameActivity extends AppCompatActivity{
                 if (GameState.getTurn() == 0){
                     GameState.getPlayers()[0].play();
                     GraveyardView.updateView(GameActivity.this);
+
                     if (GameState.isCheckMate()) {
                         Toast.makeText(GameActivity.this, "CheckMate!!!!!!!", Toast.LENGTH_LONG).show();
                         //BoardView.initializeLayout(GameActivity.this);

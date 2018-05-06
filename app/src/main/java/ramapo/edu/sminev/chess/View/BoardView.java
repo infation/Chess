@@ -152,13 +152,29 @@ public class BoardView {
 
     }
 
+    public static void showComputerMove(Location oldLoc, Location newLoc){
+        ImageButton b = board.findViewById(Location.convertToId(oldLoc));
+        b.setForeground(board.getResources().getDrawable(android.R.drawable.ic_input_add));
+        b = board.findViewById(Location.convertToId((newLoc)));
+        b.setForeground((board.getResources().getDrawable(android.R.drawable.ic_input_add)));
+    }
+
     public static void clearMoves(Location a_loc){
-        Vector<Location> moves = GameState.getBoard()[a_loc.row][a_loc.col].getPredefinedMoves(a_loc);
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
+                ImageButton b = board.findViewById(Location.convertToId(new Location(i, j)));
+                //b.setForeground(board.getResource
+                // s().getDrawable(android.R.drawable.ic_delete));
+                b.setForeground(board.getResources().getDrawable(android.R.color.transparent));
+            }
+        }
+        /*Vector<Location> moves = GameState.getBoard()[a_loc.row][a_loc.col].getPredefinedMoves(a_loc);
         for(int i = 0; i < moves.size(); i++){
             ImageButton b = board.findViewById(Location.convertToId(moves.get(i)));
-            //b.setForeground(board.getResources().getDrawable(android.R.drawable.ic_delete));
+            //b.setForeground(board.getResource
+            // s().getDrawable(android.R.drawable.ic_delete));
             b.setForeground(board.getResources().getDrawable(android.R.color.transparent));
-        }
+        }*/
 
     }
 

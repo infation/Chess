@@ -52,13 +52,16 @@ public class Pawn extends Piece {
                 moves.add(new Location(a_loc.row-1, i));
         }
         //If there is a piece in front of the pawn
-        if(GameState.getBoard()[a_loc.row-1][a_loc.col]!=null)
-            return moves;
-        else
-            moves.add(new Location(a_loc.row-1,a_loc.col));
-        //If the pawn is in the initial place it can move 1 more square ahead
-        if(a_loc.row == 6)
-            if(GameState.getBoard()[4][a_loc.col]==null)
+        if(a_loc.row - 1 >= 0) {
+            if (GameState.getBoard()[a_loc.row - 1][a_loc.col] != null)
+                return moves;
+            else
+                moves.add(new Location(a_loc.row - 1, a_loc.col));
+            //If the pawn is in the initial place it can move 1 more square ahead
+
+        }
+        if (a_loc.row == 6)
+            if (GameState.getBoard()[4][a_loc.col] == null)
                 moves.add(new Location(4, a_loc.col));
 
         return moves;
@@ -78,10 +81,12 @@ public class Pawn extends Piece {
                 moves.add(new Location(a_loc.row+1, i));
         }
         //If there is a piece in front of the pawn
-        if(GameState.getBoard()[a_loc.row+1][a_loc.col]!=null)
-            return moves;
-        else
-            moves.add(new Location(a_loc.row+1,a_loc.col));
+        if(a_loc.row + 1 < 8 ) {
+            if (GameState.getBoard()[a_loc.row + 1][a_loc.col] != null)
+                return moves;
+            else
+                moves.add(new Location(a_loc.row + 1, a_loc.col));
+        }
         //If the pawn is in the initial place it can move 1 more square ahead
         if(a_loc.row == 1)
             if(GameState.getBoard()[3][a_loc.col]==null)
