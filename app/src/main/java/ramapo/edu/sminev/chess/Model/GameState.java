@@ -207,6 +207,30 @@ public class GameState {
         return true;
     }
 
+    public static boolean isDraw(){
+        if(!isCheck()) {
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+                    if (board[i][j] != null && board[i][j].getColor() == turn) {
+                        Vector<Location> moves = board[i][j].getPredefinedMoves(new Location(i, j));
+                        for (int k = 0; k < moves.size(); k++) {
+                            board[i][j].simulateMoves(moves, new Location(i, j));
+                        }
+                        if (moves.size() != 0) {
+                            return false;
+                        }
+                        //return ((King)board[i][j]).isInCheck(new Location(i,j));
+                        //System.out.println(check);
+                    }
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+
+
     public static boolean isEnPassant(Location oldLoc, Location newLoc){
         if(board[oldLoc.row][oldLoc.col].getType() == Piece.PieceType.PAWN&&board[newLoc.row][newLoc.col] == null){
             if(newLoc.row == oldLoc.row - 1 && newLoc.col == oldLoc.col - 1) return true;

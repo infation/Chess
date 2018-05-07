@@ -4,8 +4,13 @@ package ramapo.edu.sminev.chess.Model;
 import android.provider.Settings;
 
 public class Location {
-    public final int row;
-    public final int col;
+    public int row;
+    public int col;
+    public Location(){
+        row = -1;
+        col = -1;
+    }
+
     public Location(int a_row, int a_col){
         row = a_row;
         col = a_col;

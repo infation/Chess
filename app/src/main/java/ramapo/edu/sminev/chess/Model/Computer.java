@@ -51,8 +51,7 @@ public class Computer extends Player {
         Vector<Map<String, Integer>> pieces = getCurrentPieces();
         int turn = GameState.getTurn();
         int oppositeTurn = GameState.getOppositeTurn();
-
-        double score = 200 * (pieces.get(turn).get("KING") - pieces.get(oppositeTurn).get("KING")) + //Calculate the number of kings
+        double score = //Calculate the number of kings
                 9 * (pieces.get(turn).get("QUEEN") - pieces.get(oppositeTurn).get("QUEEN")) + //Calculate the number of queens
                 5 * (pieces.get(turn).get("ROOK") - pieces.get(oppositeTurn).get("ROOK")) + //Calculate the number of rooks
                 3 * (pieces.get(turn).get("BISHOP") - pieces.get(oppositeTurn).get("BISHOP") + //Calculate the number of bishops
@@ -323,10 +322,10 @@ public class Computer extends Player {
 
 
     public void play() {
-        double maxScore = -3213213;
-        Location bestNewLoc = null;
-        Location bestOldLoc = null;
-        for (int i = 0; i < 8; i++) {
+        double maxScore;
+        Location bestNewLoc = new Location();
+        Location bestOldLoc = new Location();
+        /*for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (GameState.getBoard()[i][j] != null && GameState.getTurn() == GameState.getBoard()[i][j].getColor()) {
                     Vector<Location> moves = GameState.getPieceMovesUnderCheck(new Location(i, j));
@@ -343,15 +342,65 @@ public class Computer extends Player {
                     }
                 }
             }
-        }
+        }*/
+        maxScore = minimax(bestOldLoc, bestNewLoc, 2);
 
-        if (bestOldLoc == null) {
+        if (bestOldLoc.row == -1) {
             System.out.println("Checkmate or draw");
             return;
         }
 
-        System.out.println("MAX SCORE:  " + maxScore);
         GameState.updateState(bestOldLoc, bestNewLoc);
         BoardView.showComputerMove(bestOldLoc, bestNewLoc);
+    }
+
+    public double minimax(Location oldLoc, Location newLoc, int depth){
+        //Base case
+        if(depth == 0){
+            return evaluateScore();
+        }
+        double maxScore = Integer.MIN_VALUE;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (GameState.getBoard()[i][j] != null && GameState.getTurn() == GameState.getBoard()[i][j].getColor()) {
+                    Vector<Location> moves = GameState.getPieceMovesUnderCheck(new Location(i, j));
+                    for (int n = 0; n < moves.size(); n++) {
+                        Piece p = GameState.getBoard()[moves.get(n).row][moves.get(n).col];
+                        GameState.startSimulation(new Location(i, j), moves.get(n));
+                        /*if(GameState.getTurn() == 0){
+                            GameState.switchTurn();
+                            double score = minimax(new Location(i, j), moves.get(n), depth--, maxScore);
+                            if (score > maxScore) {
+                                oldLoc = new Location(i, j);
+                                newLoc = moves.get(n);
+                                maxScore = score;
+                            }
+                        }
+                        else{
+                            GameState.switchTurn();
+                            double score = minimax(new Location(i, j), moves.get(n), depth--, maxScore);
+                            if (score > maxScore) {
+                                oldLoc = new Location(i, j);
+                                newLoc = moves.get(n);
+                                maxScore = score;
+                            }
+
+                        }*/
+                        GameState.switchTurn();
+                        double score = -minimax(new Location(), new Location(), depth-1);
+                        if (score > maxScore) {
+                            oldLoc.row = i;
+                            oldLoc.col = j;
+                            newLoc.row = moves.get(n).row;
+                            newLoc.col = moves.get(n).col;
+                            maxScore = score;
+                        }
+                        GameState.switchTurn();
+                        GameState.endSimulation(new Location(i, j), moves.get(n), p);
+                    }
+                }
+            }
+        }
+        return maxScore;
     }
 }

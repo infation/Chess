@@ -2,6 +2,7 @@ package ramapo.edu.sminev.chess;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -14,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
+import java.util.Timer;
 import java.util.Vector;
 
 import ramapo.edu.sminev.chess.Model.Bishop;
@@ -161,19 +163,50 @@ public class GameActivity extends AppCompatActivity{
                         GameState.updateState(oldLoc, Location.parseId(view.getId()));
                         GraveyardView.updateView(GameActivity.this);
                     }
+                    if(GameState.isDraw()){
+                        Toast.makeText(GameActivity.this, "Draw!!!", Toast.LENGTH_LONG).show();
+                        /*try {
+                            Thread.sleep(5000);
+                            Intent intent = new Intent(GameActivity.this, EndGame.class);
+                            GameActivity.this.startActivity(intent);
+                        } catch (InterruptedException e) {
+                        }*/
+                    }
 
                     if (GameState.isCheckMate()) {
-                        Toast.makeText(GameActivity.this, "CheckMate!!!!!!!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(GameActivity.this, "Check-Mate!!!", Toast.LENGTH_LONG).show();
                         //BoardView.initializeLayout(GameActivity.this);
+                        /*try {
+                            Thread.sleep(5000);
+                            Intent intent = new Intent(GameActivity.this, EndGame.class);
+                            GameActivity.this.startActivity(intent);
+                        } catch (InterruptedException e) {
+                        }*/
                     }
                 }
                 if (GameState.getTurn() == 0){
                     GameState.getPlayers()[0].play();
                     GraveyardView.updateView(GameActivity.this);
+                    if(GameState.isDraw()){
+                        Toast.makeText(GameActivity.this, "Draw!!!", Toast.LENGTH_LONG).show();
+                        /*try {
+                            Thread.sleep(5000);
+                            Intent intent = new Intent(GameActivity.this, EndGame.class);
+                            GameActivity.this.startActivity(intent);
+                        } catch (InterruptedException e) {
+                        }*/
+                    }
 
                     if (GameState.isCheckMate()) {
-                        Toast.makeText(GameActivity.this, "CheckMate!!!!!!!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(GameActivity.this, "Check-Mate!!!", Toast.LENGTH_LONG).show();
                         //BoardView.initializeLayout(GameActivity.this);
+                        /*try {
+                            Thread.sleep(5000);
+                            Intent intent = new Intent(GameActivity.this, EndGame.class);
+                            GameActivity.this.startActivity(intent);
+                        } catch (InterruptedException e) {
+                        }*/
+
                     }
                     if (GameState.isCheck()) {
                         Toast.makeText(GameActivity.this, "King in check", Toast.LENGTH_SHORT).show();
@@ -186,5 +219,11 @@ public class GameActivity extends AppCompatActivity{
 
     });
 
+    public void endGame(){
+        Intent intent = new Intent(GameActivity.this, EndGame.class);
+        GameActivity.this.startActivity(intent);
+    }
+
 }
+
 
